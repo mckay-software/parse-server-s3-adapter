@@ -4,7 +4,7 @@
   "description": "AWS S3-like adapter for parse-server",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover -x **/spec/** jasmine --captureExceptions",
+    "test": "tap 'spec/*.spec.js'",
     "posttest": "standard"
   },
   "repository": {
@@ -25,14 +25,11 @@
   },
   "homepage": "https://github.com/mckay-software/parse-server-s3like-adapter#readme",
   "dependencies": {
-    "aws-sdk": "^2.2.46"
+    "minio": "^2.0.0",
+    "thenify-all": "^1.6.0"
   },
   "devDependencies": {
-    "codecov": "^1.0.1",
-    "coveralls": "^2.11.9",
-    "istanbul": "^0.4.2",
-    "jasmine": "^2.4.1",
-    "parse-server-conformance-tests": "^1.0.0",
-    "standard": "^7.1.2"
+    "standard": "^7.1.2",
+    "tap": "^5.7.2"
   }
 }

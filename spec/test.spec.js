@@ -1,42 +1,45 @@
-/* eslint-env node, jasmine */
 'use strict'
-let filesAdapterTests = require('parse-server-conformance-tests').files
 
-let S3Adapter = require('../index.js')
+const Adapter = require('..')
+const { test } = require('tap')
 
-describe('S3Adapter tests', () => {
-  it('should throw when not initialized properly', () => {
-    expect(() =>
-      new S3Adapter()
-    ).toThrow(new Error("S3Adapter requires option 'accessKey' or env. variable S3_ACCESS_KEY"))
+test('should throw when not initialized properly', (t) => {
+  t.plan(5)
 
-    expect(() =>
-      new S3Adapter('accessKey')
-    ).toThrow(new Error("S3Adapter requires option 'secretKey' or env. variable S3_SECRET_KEY"))
+  t.throws(() => new Adapter(),
+    new Error('Argument options is required.'))
 
-    expect(() =>
-      new S3Adapter('accessKey', 'secretKey')
-    ).toThrow(new Error("S3Adapter requires option 'bucket' or env. variable S3_BUCKET"))
+  t.throws(() => new Adapter({}),
+    new Error('Argument endPoint is required.'))
 
-    expect(() =>
-      new S3Adapter({ accessKey: 'accessKey' })
-    ).toThrow(new Error("S3Adapter requires option 'secretKey' or env. variable S3_SECRET_KEY"))
+  t.throws(() => new Adapter({
+    endPoint: 'https://localhost'
+  }), new Error('Argument accessKey is required.'))
 
-    expect(() =>
-      new S3Adapter({ accessKey: 'accessKey', secretKey: 'secretKey' })
-    ).toThrow(new Error("S3Adapter requires option 'bucket' or env. variable S3_BUCKET"))
-  })
+  t.throws(() => new Adapter({
+    endPoint: 'https://localhost',
+    accessKey: 'accessKey'
+  }), new Error('Argument secretKey is required.'))
 
-  it('should not throw when initialized properly', () => {
-    expect(() =>
-      new S3Adapter('accessKey', 'secretKey', 'bucket')
-    ).not.toThrow()
+  t.throws(() => new Adapter({
+    endPoint: 'https://localhost',
+    accessKey: 'accessKey',
+    secretKey: 'secretKey'
+  }), new Error('Argument bucket is required.'))
+})
 
-    expect(() =>
-      new S3Adapter({ accessKey: 'accessKey', secretKey: 'secretKey', bucket: 'bucket' })
-    ).not.toThrow()
-  })
+test('should not throw when initialized properly', (t) => {
+  t.plan(1)
 
+  t.doesNotThrow(() => new Adapter({
+    endPoint: 'https://play.minio.io:9000',
+    accessKey: 'accessKey',
+    secretKey: 'secretKey',
+    bucket: 'bucket'
+  }))
+})
+
+/*
   describe('getFileLocation', () => {
     var config = {
       mount: 'http://my.server.com/parse',
@@ -86,3 +89,4 @@ describe('S3Adapter tests', () => {
     filesAdapterTests.testAdapter('S3Adapter', s3)
   }
 })
+*/
