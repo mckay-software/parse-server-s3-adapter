@@ -11,36 +11,25 @@ function required (name) {
 class Adapter {
   constructor (options = required('options')) {
     const {
-      endPoint = required('endPoint'),
       accessKey = required('accessKey'),
+      bucket = required('bucket'),
+      direct = false,
+      endPoint = required('endPoint'),
+      prefix = '',
+      region = 'us-east-1',
       secretKey = required('secretKey')
     } = options
 
-    // All below needs the required() check for `endPoint` to have run
+    // Needs the required() check for `endPoint` to have run
+    const ep = url.parse(endPoint)
+    const { secure = ep.protocol === 'https:' } = options
 
-    function fromEndPoint () {
-      let { hostname, port, protocol } = url.parse(endPoint)
-      const secure = protocol === 'https:'
-      if (port) {
-        port = +port
-      } else {
-        port = secure ? 443 : 80
-      }
+    // Needs `secure`, whether it's provided or defaulted
+    const { port = ep.port ? +ep.port : (secure ? 443 : 80) } = options
 
-      return { hostname, port, secure }
-    }
-
-    const {
-      secure = fromEndPoint().secure,
-      port = fromEndPoint().port,
-      bucket = required('bucket'),
-      region = 'us-east-1',
-      prefix = ''
-    } = options
-
-    Object.assign(this, { bucket, region, prefix })
+    Object.assign(this, { bucket, direct, region, prefix })
     this.minio = thenifyAll(new Minio({
-      endPoint: fromEndPoint().hostname, accessKey, secretKey, secure, port
+      endPoint: ep.hostname, accessKey, secretKey, secure, port
     }))
   }
 
@@ -69,7 +58,7 @@ class Adapter {
   }
 
   getFileLocation (config, filename) {
-    if (this.directAccess) {
+    if (this.direct) {
       const loc = url.parse(this.baseUrl)
       loc.path = this.prefix + filename
       return url.format(loc)

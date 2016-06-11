@@ -23,13 +23,23 @@ $ npm install --save parse-server-s3like-adapter
 filesAdapter: {
   module: 'parse-server-s3like-adapter',
   options: {
-    endPoint: 'https://...', // required
-    accessKey: 'accessKey', // required
-    secretKey: 'secretKey', // required
-    bucket: 'my_bucket', // required
-    prefix: '', // optional, defaults to ''
-    region: 'us-east-1', // optional, defaults to us-east-1
+    accessKey: 'accessKey',
+    bucket: 'my_bucket',
+    direct: true,
+    endPoint: 'https://...',
+    secretKey: 'secretKey'
   }
 }
 ```
 
+| Option | Default | Description |
+|:-------|:-------:|:------------|
+| `accessKey` | **required** ||
+| `bucket` | **required** | The bucket to store data into. |
+| `direct` | `false` | If true, files will be served from the endPoint. Otherwise, they are proxied by Parse. |
+| `endPoint` | **required** | The URL to the storage service. Should be a full URL, with protocol and port, e.g. `https//...`. |
+| `port` | From `endPoint` | Override the port number. By default is parsed from the `endPoint` URL, with 80/443 as generic defaults. |
+| `prefix` | `''` | A prefix to apply to all filenames. Can be set to e.g. `foo/` to put all files in a subdirectory. Can also be a function that takes the filename and returns a string. |
+| `region` | `'us-east-1` | May not actually matter for some services, refer to your documentation. |
+| `secretKey` | **required** ||
+| `secure` | From `endPoint` | Override whether the connection is secure or not. By default is parsed from the `endPoint` URL. |
