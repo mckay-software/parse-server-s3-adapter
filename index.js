@@ -33,22 +33,30 @@ class Adapter {
     }))
   }
 
+  filename (name) {
+    if (typeof this.prefix === 'function') {
+      return this.prefix(name)
+    }
+
+    return this.prefix + name
+  }
+
   createBucket () {
     return this.minio.bucketExists(this.bucket)
     .catch(() => this.minio.makeBucket(this.bucket, this.region))
   }
 
-  createFile (filename, data, contentType) {
-    return this.minio.putObject(this.bucket, this.prefix + filename, data, contentType)
+  createFile (name, data, contentType) {
+    return this.minio.putObject(this.bucket, this.filename(name), data, contentType)
   }
 
-  deleteFile (filename) {
-    return this.minio.removeObject(this.bucket, this.prefix + filename)
+  deleteFile (name) {
+    return this.minio.removeObject(this.bucket, this.filename(name))
   }
 
-  getFileData (filename) {
+  getFileData (name) {
     this.createBucket()
-    .then(() => this.minio.getObject(this.bucket, this.prefix + filename))
+    .then(() => this.minio.getObject(this.bucket, this.filename(name)))
     .then((stream) => new Promise((resolve, reject) => {
       const buflist = []
       stream.on('error', reject)
@@ -57,10 +65,10 @@ class Adapter {
     }))
   }
 
-  getFileLocation (config, filename) {
+  getFileLocation (config, name) {
     if (this.direct) {
       const loc = url.parse(this.baseUrl)
-      loc.path = this.prefix + filename
+      loc.path = this.filename(name)
       return url.format(loc)
     }
 
