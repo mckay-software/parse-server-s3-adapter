@@ -1,15 +1,12 @@
 /* @flow */
 'use strict'
 
-const bufferFrom /* : (b: string | Buffer ) => Buffer */ = require('./buffer-from')
+const assert = require('assert')
+const bufferFrom /* : (b: string|Buffer) => Buffer */ = require('./buffer-from')
 const Minio = require('minio')
 const thenifyAll = require('thenify-all')
 const url = require('url')
 const urljoin = require('url-join')
-
-function required (name /* : string */) {
-  throw new Error(`Argument ${name} is required.`)
-}
 
 class Adapter {
   /* :: static default: Class<Adapter>; */
@@ -23,16 +20,21 @@ class Adapter {
   /* :: region: string; */
   /* :: secretKey: string; */
 
-  constructor (options /* : Object */ = required('options')) {
+  constructor (options /* : Object */ = {}) {
     const {
-      accessKey = required('accessKey'),
-      bucket = required('bucket'),
+      accessKey,
+      bucket,
       direct = false,
-      endPoint = required('endPoint'),
+      endPoint,
       prefix = '',
       region = 'us-east-1',
-      secretKey = required('secretKey')
+      secretKey
     } = options
+
+    assert(accessKey, 'Argument required: accessKey')
+    assert(bucket, 'Argument required: bucket')
+    assert(endPoint, 'Argument required: endPoint')
+    assert(secretKey, 'Argument required: secretKey')
 
     // Needs the required() check for `endPoint` to have run
     const ep = url.parse(endPoint)
