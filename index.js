@@ -44,12 +44,12 @@ class Adapter {
     const { port = ep.port ? +ep.port : (secure ? 443 : 80) } = options
 
     Object.assign(this, { region })
-    Object.assign(this,
-      { bucket: bucket === 'function' ? bucket : () => `${bucket}` })
-    Object.assign(this,
-      { direct: direct === 'function' ? direct : () => !!direct })
-    Object.assign(this,
-      { prefix: prefix === 'function' ? prefix : (name) => `${prefix}${name}` })
+    Object.assign(this, { bucket: typeof bucket === 'function'
+      ? bucket : () => `${bucket}` })
+    Object.assign(this, { direct: typeof direct === 'function'
+      ? direct : () => !!direct })
+    Object.assign(this, { prefix: typeof prefix === 'function'
+      ? prefix : (name) => `${prefix}${name}` })
 
     this.minio = thenifyAll(new Minio({
       endPoint: ep.hostname, accessKey, secretKey, secure, port
