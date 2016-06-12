@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "tap 'spec/*.spec.js'",
-    "posttest": "standard"
+    "posttest": "flow check && standard"
   },
   "repository": {
     "type": "git",
@@ -26,9 +26,11 @@
   "homepage": "https://github.com/mckay-software/parse-server-s3like-adapter#readme",
   "dependencies": {
     "minio": "^2.0.0",
-    "thenify-all": "^1.6.0"
+    "thenify-all": "^1.6.0",
+    "url-join": "^1.1.0"
   },
   "devDependencies": {
+    "flow-bin": "^0.27.0",
     "standard": "^7.1.2",
     "tap": "^5.7.2"
   }

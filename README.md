@@ -35,11 +35,11 @@ filesAdapter: {
 | Option | Default | Description |
 |:-------|:-------:|:------------|
 | `accessKey` | **required** ||
-| `bucket` | **required** | The bucket to store data into. |
-| `direct` | `false` | If true, files will be served from the endPoint. Otherwise, they are proxied by Parse. |
+| `bucket` | **required** | The bucket to store data into. This can be a function that takes the filename and returns a string. |
+| `direct` | `false` | Whether files are served from the `endPoint` (`true`) or proxied by Parse (`false`). This can be a function that takes the filename and returns a boolean. |
 | `endPoint` | **required** | The URL to the storage service. Should be a full URL, with protocol and port (if non-standard), e.g. `https://play.minio.io:9000` or `https://minio.example.com`. |
 | `port` | From `endPoint` | Override the port number. By default is parsed from the `endPoint` URL, with 80/443 as standard defaults based the value of `secure`. |
-| `prefix` | `''` | A prefix to apply to all filenames. Can be set to e.g. `'foo/'` to put all files in a subdirectory. Can also be a function that takes the filename and returns a string. |
-| `region` | `'us-east-1'` | May not actually matter for some services, refer to your documentation. |
+| `prefix` | `''` | A prefix to apply to all filenames. Can be set to e.g. `'foo/'` to put all files in a subdirectory. This can be a function that takes the filename and returns a string. |
+| `region` | `'us-east-1'` | May not actually matter for some services, refer to your documentation. This can be a function that takes the filename and returns a string. |
 | `secretKey` | **required** ||
 | `secure` | From `endPoint` | Override whether the connection is secure or not. By default is parsed from the `endPoint` URL (`https` is secure, otherwise not). |
