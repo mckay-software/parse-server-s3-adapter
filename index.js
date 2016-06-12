@@ -51,9 +51,17 @@ class Adapter {
     Object.assign(this, { prefix: typeof prefix === 'function'
       ? prefix : (name) => `${prefix}${name}` })
 
-    this.minio = thenifyAll(new Minio({
+    this.minio = new Minio({
       endPoint: ep.hostname, accessKey, secretKey, secure, port
-    }))
+    })
+
+    thenifyAll.withCallback(this.minio, this.minio, [
+      'bucketExists',
+      'getObject',
+      'makeBucket',
+      'putObject',
+      'removeObject'
+    ])
   }
 
   createBucket (filename /* : string */) /* : Promise */ {
@@ -67,12 +75,17 @@ class Adapter {
     contentType /* : string */
   ) /* : Promise */ {
     return this.createBucket(name)
-    .then(this.minio.putObject(this.bucket(name), this.prefix(name), data, contentType))
+    .then(() => this.minio.putObject(
+      this.bucket(name),
+      this.prefix(name),
+      data,
+      contentType
+    ))
   }
 
   deleteFile (name /* : string */) /* : Promise */ {
     return this.createBucket(name)
-    .then(this.minio.removeObject(this.bucket(name), this.prefix(name)))
+    .then(() => this.minio.removeObject(this.bucket(name), this.prefix(name)))
   }
 
   getFileData (name /* : string */) /* : Promise */ {

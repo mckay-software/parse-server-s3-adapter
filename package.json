@@ -4,8 +4,12 @@
   "description": "AWS S3-like adapter for parse-server",
   "main": "index.js",
   "scripts": {
-    "test": "tap 'spec/*.spec.js'",
+    "test": "./minio.sh tap 'spec/*.spec.js'",
     "posttest": "flow check && standard"
+  },
+  "config": {
+    "access": "EXAMPLE01210EXAMPLE",
+    "secret": "foobarbaz"
   },
   "repository": {
     "type": "git",
@@ -31,6 +35,7 @@
   },
   "devDependencies": {
     "flow-bin": "^0.27.0",
+    "mz": "^2.4.0",
     "standard": "^7.1.2",
     "tap": "^5.7.2"
   }
