@@ -22,14 +22,10 @@ class Adapter {
 
   constructor (options /* : Object */ = {}) {
     const {
-      accessKey,
-      bucket,
-      direct = false,
-      endPoint,
-      prefix = '',
-      region = 'us-east-1',
-      secretKey
-    } = options
+      accessKey, bucket, direct, endPoint, prefix, region, secretKey
+    } = Object.assign({
+      direct: false, prefix: '', region: 'us-east-1'
+    }, options)
 
     assert(accessKey, 'Argument required: accessKey')
     assert(bucket, 'Argument required: bucket')
