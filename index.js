@@ -39,7 +39,7 @@ class Adapter {
     // Needs `secure`, whether it's provided or defaulted
     const { port = ep.port ? +ep.port : (secure ? 443 : 80) } = options
 
-    Object.assign(this, { region: `${region}` })
+    Object.assign(this, { endPoint, region: `${region}` })
     Object.assign(this, { bucket: typeof bucket === 'function'
       ? bucket : () => `${bucket}` })
     Object.assign(this, { direct: typeof direct === 'function'
@@ -51,7 +51,7 @@ class Adapter {
       endPoint: ep.hostname, accessKey, secretKey, secure, port
     })
 
-    thenifyAll.withCallback(this.minio, this.minio, [
+    thenifyAll(this.minio, this.minio, [
       'bucketExists',
       'getObject',
       'makeBucket',
@@ -97,7 +97,7 @@ class Adapter {
 
   getFileLocation (config /* : Object */, name /* : string */) /* : string */ {
     const parts = this.direct(name)
-      ? [this.endPoint, this.prefix(name)]
+      ? [this.endPoint, this.bucket(name), this.prefix(name)]
       : [config.mount, 'files', config.applicationId, encodeURIComponent(name)]
     return urljoin(...parts)
   }
