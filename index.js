@@ -43,7 +43,7 @@ class Adapter {
     // Needs `secure`, whether it's provided or defaulted
     const { port = ep.port ? +ep.port : (secure ? 443 : 80) } = options
 
-    Object.assign(this, { region })
+    Object.assign(this, { region: `${region}` })
     Object.assign(this, { bucket: typeof bucket === 'function'
       ? bucket : () => `${bucket}` })
     Object.assign(this, { direct: typeof direct === 'function'
