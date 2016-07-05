@@ -60,7 +60,7 @@ class Adapter {
     ])
   }
 
-  createBucket (filename /* : string */) /* : Promise */ {
+  createBucket (filename /* : string */) /* : Promise<any> */ {
     return this.minio.bucketExists(this.bucket(filename))
     .catch(() => this.minio.makeBucket(this.bucket(filename), this.region))
   }
@@ -69,7 +69,7 @@ class Adapter {
     name /* : string */,
     data /* : string|Buffer */,
     contentType /* : string */
-  ) /* : Promise */ {
+  ) /* : Promise<any> */ {
     return this.createBucket(name)
     .then(() => this.minio.putObject(
       this.bucket(name),
@@ -79,12 +79,12 @@ class Adapter {
     ))
   }
 
-  deleteFile (name /* : string */) /* : Promise */ {
+  deleteFile (name /* : string */) /* : Promise<any> */ {
     return this.createBucket(name)
     .then(() => this.minio.removeObject(this.bucket(name), this.prefix(name)))
   }
 
-  getFileData (name /* : string */) /* : Promise */ {
+  getFileData (name /* : string */) /* : Promise<Buffer> */ {
     return this.createBucket(name)
     .then(() => this.minio.getObject(this.bucket(name), this.prefix(name)))
     .then((stream) => new Promise((resolve, reject) => {
