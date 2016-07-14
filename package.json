@@ -34,7 +34,7 @@
     "url-join": "^1.1.0"
   },
   "devDependencies": {
-    "flow-bin": "^0.28.0",
+    "flow-bin": "^0.29.0",
     "mz": "^2.4.0",
     "standard": "^7.1.2",
     "tap": "^6.1.0"
