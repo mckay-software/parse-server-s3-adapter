@@ -1,5 +1,7 @@
 # Parse Server: S3-like storage adapter
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mckay-software/parse-server-s3like-adapter.svg)](https://greenkeeper.io/)
+
 [![npm](https://img.shields.io/npm/v/parse-server-s3like-adapter.svg?style=flat-square)](https://www.npmjs.com/package/parse-server-s3like-adapter)
 [![Travis](https://img.shields.io/travis/mckay-software/parse-server-s3like-adapter.svg?style=flat-square)](https://travis-ci.org/mckay-software/parse-server-s3like-adapter)
 [![Coveralls](https://img.shields.io/coveralls/mckay-software/parse-server-s3like-adapter.svg?style=flat-square)](https://coveralls.io/github/mckay-software/parse-server-s3like-adapter)
